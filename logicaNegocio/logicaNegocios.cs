@@ -284,17 +284,42 @@ order by secuencia desc";
             string id = string.Empty;
             string estado = string.Empty;
             string respuesta = string.Empty;
-            string select = @"select DELM_SECUENCIA_NB secuencia,
-OFIC_NOMBRE_V2 oficina,
-DELM_FECENVIO_DT fecenvio,
-DELM_IDMINISTERIO_NB id,
-DELM_ESTADO_V2 estado,
-DELM_XMLRECIBIDO_XML recibido
-from det_log_ministerio,oficinas
-where DELM_OFICINA_NB=OFIC_CODOFIC_NB
-and DELM_TRANSACCION_NB=4
-and DELM_LLAVE_V2='009171757'
-order by secuencia desc";
+            string select = @"";
+            using (OracleConnection con = new OracleConnection(_cadena))
+            {
+                OracleCommand cmd = new OracleCommand(select, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                OracleDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    oficina = dr["oficina"].ToString();
+                    fecenvio = DateTime.Parse(dr["fecenvio"].ToString());
+                    id = dr["id"].ToString();
+                    estado = dr["estado"].ToString();
+                    respuesta = dr["recibido"].ToString();
+                    break;
+                }
+                con.Close();
+            }
+            dtrespuesta.Rows.Add(oficina, fecenvio, id, respuesta, estado);
+            return dtrespuesta;
+        }
+        public DataTable respuestaOsp(string planilla)
+        {
+            DataTable dtrespuesta = new DataTable("respuesta");
+            dtrespuesta.Columns.Add("oficina", typeof(string));
+            dtrespuesta.Columns.Add("fecenvio", typeof(DateTime));
+            dtrespuesta.Columns.Add("id", typeof(string));
+            dtrespuesta.Columns.Add("respuesta", typeof(string));
+            dtrespuesta.Columns.Add("estado", typeof(string));
+
+            string oficina = string.Empty;
+            DateTime fecenvio = DateTime.Now;
+            string id = string.Empty;
+            string estado = string.Empty;
+            string respuesta = string.Empty;
+            string select = @"";
             using (OracleConnection con = new OracleConnection(_cadena))
             {
                 OracleCommand cmd = new OracleCommand(select, con);
