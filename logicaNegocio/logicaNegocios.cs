@@ -247,7 +247,7 @@ DELM_XMLRECIBIDO_XML recibido
 from det_log_ministerio,oficinas
 where DELM_OFICINA_NB=OFIC_CODOFIC_NB
 and DELM_TRANSACCION_NB=4
-and DELM_LLAVE_V2='009171757'
+and DELM_LLAVE_V2='" + planilla + @"'
 order by secuencia desc";
             using (OracleConnection con = new OracleConnection(_cadena))
             {
@@ -284,7 +284,17 @@ order by secuencia desc";
             string id = string.Empty;
             string estado = string.Empty;
             string respuesta = string.Empty;
-            string select = @"";
+            string select = @"select DESE_SECUENCIA_NB secuencia,
+OFIC_NOMBRE_V2 oficina,
+DESE_FECPROCESA_DT fecenvio,
+DESE_NUMACEPTA_NB id,
+DESE_ESTADO_V2 estado,
+DESE_REGRECIBIDO_V2 recibido
+from det_log_desseguro,oficinas
+where DESE_OFICINA_NB=OFIC_CODOFIC_NB
+and DESE_TRANSACCION_NB=4
+and DESE_LLAVE_V2='"+planilla+@"'
+order by secuencia desc";
             using (OracleConnection con = new OracleConnection(_cadena))
             {
                 OracleCommand cmd = new OracleCommand(select, con);
@@ -319,7 +329,17 @@ order by secuencia desc";
             string id = string.Empty;
             string estado = string.Empty;
             string respuesta = string.Empty;
-            string select = @"";
+            string select = @"select LPAD_SECUENCIA_NB secuencia,
+OFIC_NOMBRE_V2 oficina,
+LPAD_FECHA_DT fecenvio,
+LPAD_IDADMINSAT_V2 id,
+LPAD_ESTADO_V2 estado,
+LPAD_RESPUESTA_V2 recibido
+from log_plan_adminsat,oficinas
+where LPAD_OFICINA_NB=OFIC_CODOFIC_NB
+and LPAD_TRANSACCION_NB=4
+and LPAD_LLAVE_V2='" + planilla + @"'
+order by secuencia desc";
             using (OracleConnection con = new OracleConnection(_cadena))
             {
                 OracleCommand cmd = new OracleCommand(select, con);
