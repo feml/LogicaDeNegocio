@@ -360,6 +360,43 @@ order by secuencia desc";
             dtrespuesta.Rows.Add(oficina, fecenvio, id, respuesta, estado);
             return dtrespuesta;
         }
+        public DataTable estadoRobots(string planilla)
+        {
+            _dtConsulta = new DataTable("Consulta");
+            _dtConsulta.Columns.Add("Planilla", typeof(string));
+            _dtConsulta.Columns.Add("Fecha", typeof(DateTime));
+            _dtConsulta.Columns.Add("Oficina", typeof(string));
+            _dtConsulta.Columns.Add("Ministerio", typeof(string));
+            _dtConsulta.Columns.Add("Deseguro", typeof(string));
+            _dtConsulta.Columns.Add("Osp", typeof(string));
+            string select = @"select VIAJ_NOPLANILLA_V2 planilla, 
+                                VIAJ_FECVIAJE_DT fecha,
+                                VEHI_PROPIETARIO_NB propietario,
+                                OFIC_NOMBRE_V2 oficina
+                                from viajes,vehiculos,oficinas
+                                where VIAJ_PLACA_CH=VEHI_PLACA_CH
+                                and VIAJ_OFDESPACHA_NB=OFIC_CODOFIC_NB
+                                and VIAJ_ESTADO_V2 not in ('A') 
+                                and VIAJ_NOPLANILLA_V2='"+planilla+"'";
+            using (OracleConnection con = new OracleConnection(_cadena))
+            {
+                OracleCommand cmd = new OracleCommand(select, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                OracleDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    _planilla = dr["planilla"].ToString();
+                    _fecha = DateTime.Parse(dr["fecha"].ToString());
+                    _propietario = dr["propietario"].ToString();
+                    _oficina = dr["oficina"].ToString();
+                    ministerio(_planilla);
+                    agregarColumna(_planilla, _fecha, _oficina, _ministerio, _deseguro, _osp, _propietario);
+                }
+                con.Close();
+            }
 
+            return _dtConsulta;
+        }
     }
 }

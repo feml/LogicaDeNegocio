@@ -8,3 +8,4 @@ C:\proyectos\githup\LogicaDeNegocio\logicaNegocio\bin\Debug\logicaNegocio.pdb
 C:\proyectos\githup\LogicaDeNegocio\logicaNegocio\bin\Debug\Oracle.DataAccess.dll
 C:\proyectos\githup\LogicaDeNegocio\logicaNegocio\obj\Debug\logicaNegocio.dll
 C:\proyectos\githup\LogicaDeNegocio\logicaNegocio\obj\Debug\logicaNegocio.pdb
+C:\proyectos\githup\LogicaDeNegocio\logicaNegocio\obj\Debug\logicaNegocio.csprojResolveAssemblyReference.cache
